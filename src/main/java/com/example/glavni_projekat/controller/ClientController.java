@@ -7,6 +7,7 @@ import com.example.glavni_projekat.repository.ClientJpaRepository;
 import com.example.glavni_projekat.repository.ClientRepository;
 import org.apache.coyote.Response;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -17,6 +18,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 @RestController
+
 
 
 public class ClientController {
@@ -97,6 +99,20 @@ public class ClientController {
             clientRepository.insertClient(client);
             return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful.");
         }
+
     }
 
-}
+    @PostMapping("/api/clients/login")
+    public ResponseEntity<?> loginClient(Client client) {
+        if(clientJpaRepository.findByUsernameAndPassword(client.getUsername(), client.getPassword()).isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password incorrect.");
+        } else {String userName = clientJpaRepository.findByUsername(client.getUsername()).get(0).getUsername();
+            return ResponseEntity.status(HttpStatus.OK).body("Client with username " + userName + " logged in.");
+        }
+    }
+
+    }
+
+
+
+

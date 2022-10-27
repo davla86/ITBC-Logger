@@ -4,7 +4,6 @@ package com.example.glavni_projekat.repository;
 
 import com.example.glavni_projekat.model.Client;
 import com.fasterxml.classmate.util.ConcurrentTypeCache;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
