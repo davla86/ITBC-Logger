@@ -1,11 +1,10 @@
 package com.example.glavni_projekat.model;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
+
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -13,6 +12,7 @@ public class Client {
     private int id;
     private String username;
     private String password;
+    private String email;
     private String role;
 
     public int getId(){
@@ -34,6 +34,13 @@ public class Client {
     }
     public void setPassword(String password){
         this.password = password;
+    }
+
+    public String getEmail(){
+        return email;
+    }
+    public void setEmail(String email){
+        this.email = email;
     }
 
     public String getRole(){
