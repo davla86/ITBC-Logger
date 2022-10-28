@@ -7,7 +7,7 @@ import com.example.glavni_projekat.repository.ClientJpaRepository;
 import com.example.glavni_projekat.repository.ClientRepository;
 import org.apache.coyote.Response;
 
-import org.springframework.context.annotation.Bean;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -54,20 +54,20 @@ public class ClientController {
     }
 
     @PostMapping("/api/clients/register")
-    public ResponseEntity<String> registerClient(Client client){
+    public ResponseEntity<String> registerClient(Client client) {
 
         String regex = "^(.+)@(.+)$";
 
         Pattern pattern = Pattern.compile(regex);
 
-        if(!pattern.matcher(client.getEmail()).matches()){
+        if (!pattern.matcher(client.getEmail()).matches()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email must be valid");
         }
 
         regex = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$";
         pattern = Pattern.compile(regex);
 
-        if(!pattern.matcher(client.getUsername()).matches()){
+        if (!pattern.matcher(client.getUsername()).matches()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username must be valid");
         }
 
@@ -80,7 +80,7 @@ public class ClientController {
         regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
         pattern = Pattern.compile(regex);
 
-        if(!pattern.matcher(client.getPassword()).matches()){
+        if (!pattern.matcher(client.getPassword()).matches()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("password must be valid");
         }
 
@@ -91,9 +91,9 @@ public class ClientController {
 //        Password must contain a length of at least 8 characters and a maximum of 20 characters.
 
 
-        if(!clientJpaRepository.findByUsername(client.getUsername()).isEmpty()){
+        if (!clientJpaRepository.findByUsername(client.getUsername()).isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("username exists.");
-        } else if(!clientJpaRepository.findByEmail(client.getEmail()).isEmpty()){
+        } else if (!clientJpaRepository.findByEmail(client.getEmail()).isEmpty()) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("email exists.");
         } else {
             clientRepository.insertClient(client);
@@ -104,14 +104,60 @@ public class ClientController {
 
     @PostMapping("/api/clients/login")
     public ResponseEntity<?> loginClient(Client client) {
-        if(clientJpaRepository.findByUsernameAndPassword(client.getUsername(), client.getPassword()).isEmpty()){
+        if (clientJpaRepository.findByUsernameAndPassword(client.getUsername(), client.getPassword()).isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Username or password incorrect.");
-        } else {String userName = clientJpaRepository.findByUsername(client.getUsername()).get(0).getUsername();
+        } else {
+            String userName = clientJpaRepository.findByUsername(client.getUsername()).get(0).getUsername();
             return ResponseEntity.status(HttpStatus.OK).body("Client with username " + userName + " logged in.");
         }
     }
 
+    @PutMapping("/api/clients/{id}")
+    public ResponseEntity<?> updateClient(@PathVariable int id, Client client) {
+        String regex = "^(.+)@(.+)$";
+
+        Pattern pattern = Pattern.compile(regex);
+
+        if (!pattern.matcher(client.getEmail()).matches()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("email must be valid");
+        }
+
+        regex = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$";
+        pattern = Pattern.compile(regex);
+
+        if (!pattern.matcher(client.getUsername()).matches()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("username must be valid");
+        }
+
+//        Username consists of alphanumeric characters (a-zA-Z0-9), lowercase, or uppercase.
+//        Username allowed of the dot (.), underscore (_), and hyphen (-).
+//        The dot (.), underscore (_), or hyphen (-) must not be the first or last character.
+//        The dot (.), underscore (_), or hyphen (-) does not appear consecutively, e.g., java..regex
+//        The number of characters must be between 5 to 20.
+
+        regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
+        pattern = Pattern.compile(regex);
+
+        if (!pattern.matcher(client.getPassword()).matches()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("password must be valid");
+        }
+
+//        Password must contain at least one digit [0-9].
+//        Password must contain at least one lowercase Latin character [a-z].
+//        Password must contain at least one uppercase Latin character [A-Z].
+//        Password must contain at least one special character like ! @ # & ( ).
+//        Password must contain a length of at least 8 characters and a maximum of 20 characters.
+
+
+        if (!clientJpaRepository.findById(id).isEmpty()) {
+            clientRepository.updateClient(id, client);
+            return ResponseEntity.status(HttpStatus.OK).body("Client updated.");
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Client with id doesn't exists.");
+        }
+
     }
+}
 
 
 

@@ -15,6 +15,16 @@ public class Client {
     private String email;
     private String role;
 
+    public Client() {}
+
+    public Client(String username, String password, String email, String role) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
+
     public int getId(){
         return id;
     }

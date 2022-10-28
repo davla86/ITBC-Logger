@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 @Repository
-public class ClientRepository {
+public class ClientRepository  {
 
     private JdbcTemplate jdbcTemplate;
 
