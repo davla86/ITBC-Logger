@@ -5,20 +5,20 @@ Technologies (Java oracle 19, MS SQL Server, Spring Boot (2.7.4), OpenAPI)
 
 This is how I imagine the application works.
 ClientControllor has following methods:
-Get all clients
-Get clients by name
-Get clients by id
-Get clients logs
-Registration clients
-Login clients
-Update clients information
+Get all clients;
+Get clients by name;
+Get clients by id;
+Get clients logs;
+Registration clients;
+Login clients;
+Update clients information.
 
 LogControllor has following methods:
-Get all logs
-Get logs by name
-Get logs by id
-Get message of logs
-Creation logs
+Get all logs;
+Get logs by name;
+Get logs by id;
+Get message of logs;
+Creation logs.
 
 HTTP Method: POST
 Endpoint URL: /api/clients/register
